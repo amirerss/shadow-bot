@@ -4,7 +4,7 @@ from discord import app_commands
 from discord.ui import View, Button
 import os
 
-YETKILI_ROLLER = [1496628714413228072]
+YETKILI_ROLLER = [1483443654772396093 , 1494377287666368602 , 1494377031432147055 ]
 
 # --- MERKEZİ KURULUM MENÜSÜ ---
 class KurulumMenusu(View):
