@@ -124,7 +124,7 @@ class KurulumMenusu(View):
         except Exception as e:
             await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
 
-    @discord.ui.button(label="📖 Rol Terimleri Kur", style=discord.ButtonStyle.secondary, custom_id="kur_rolterimleri")
+    @discord.ui.button(label="📖 # Rol Terimleri Kur", style=discord.ButtonStyle.secondary, custom_id="kur_rolterimleri")
     async def btn_rolterimleri(self, interaction: discord.Interaction, button: Button):
         await interaction.response.defer(ephemeral=True)
         try:
