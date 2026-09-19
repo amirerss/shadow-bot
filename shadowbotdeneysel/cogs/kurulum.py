@@ -39,7 +39,7 @@ class KurulumMenusu(View):
             from cogs.bilgilendirme_modul import BilgilendirmeView
             
             embed = discord.Embed(
-                title="Bilgilendirme Merkezi",
+                title="# Bilgilendirme Merkezi",
                 description=(
                     "Shadow Roleplay; kapsamlı bir RP deneyimi sunan; karakter gelişimi, entrika ve strateji odaklı bir RP sunucusudur. "
                     "Aşağıdaki butonları kullanarak;\n"
