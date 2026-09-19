@@ -195,7 +195,6 @@ class KurulumMenusu(View):
         except Exception as e:
             await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
 
-
     @discord.ui.button(label="🌍 Sunucu Hakkında Kur", style=discord.ButtonStyle.primary, custom_id="kur_hakkinda")
     async def btn_hakkinda(self, interaction: discord.Interaction, button: Button):
         await interaction.response.defer(ephemeral=True)
@@ -230,6 +229,68 @@ class KurulumMenusu(View):
                 await interaction.channel.send(embed=embed)
                 
             await interaction.followup.send("✅ 'Sunucu Hakkında' paneli bu kanala başarıyla kuruldu.", ephemeral=True)
+        except Exception as e:
+            await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
+
+    @discord.ui.button(label="📞 İletişim Paneli Kur", style=discord.ButtonStyle.secondary, custom_id="kur_iletisim")
+    async def btn_iletisim(self, interaction: discord.Interaction, button: Button):
+        await interaction.response.defer(ephemeral=True)
+        try:
+            from cogs.iletisim_modul import get_iletisim_data, save_iletisim_data, iletisim_embed_olustur
+
+            veri = get_iletisim_data()
+            embed = iletisim_embed_olustur(veri)
+
+            dosya_yolu = os.path.join("textures", "ulasim.png")
+            if os.path.exists(dosya_yolu):
+                dosya = discord.File(dosya_yolu, filename="ulasim.png")
+                gonderilen_mesaj = await interaction.channel.send(file=dosya, embed=embed)
+            else:
+                gonderilen_mesaj = await interaction.channel.send(embed=embed)
+
+            veri["kanal_id"] = interaction.channel.id
+            veri["mesaj_id"] = gonderilen_mesaj.id
+            save_iletisim_data(veri)
+
+            await interaction.followup.send("✅ İletişim paneli bu kanala başarıyla kuruldu.", ephemeral=True)
+        except Exception as e:
+            await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
+
+    @discord.ui.button(label="💻 Geliştirici Ekip Paneli Kur", style=discord.ButtonStyle.secondary, custom_id="kur_gelistirici")
+    async def btn_gelistirici(self, interaction: discord.Interaction, button: Button):
+        await interaction.response.defer(ephemeral=True)
+        try:
+            from cogs.gelistirici_ekip_modul import get_gelistirici_data, save_gelistirici_data, gelistirici_embed_olustur
+
+            veri = get_gelistirici_data()
+            embed = gelistirici_embed_olustur(veri)
+
+            gonderilen_mesaj = await interaction.channel.send(embed=embed)
+
+            veri["kanal_id"] = interaction.channel.id
+            veri["mesaj_id"] = gonderilen_mesaj.id
+            save_gelistirici_data(veri)
+
+            await interaction.followup.send("✅ Geliştirici ekip paneli bu kanala başarıyla kuruldu.", ephemeral=True)
+        except Exception as e:
+            await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
+
+    @discord.ui.button(label="🛡️ Yetkili Ekip Paneli Kur", style=discord.ButtonStyle.secondary, custom_id="kur_yetkili")
+    async def btn_yetkili(self, interaction: discord.Interaction, button: Button):
+        await interaction.response.defer(ephemeral=True)
+        try:
+            from cogs.yetkili_ekip_modul import get_yetkili_data, save_yetkili_data, yetkili_embed_olustur
+
+            veri = get_yetkili_data()
+            embed = yetkili_embed_olustur(veri)
+
+            gonderilen_mesaj = await interaction.channel.send(embed=embed)
+
+            veri["kanal_id"] = interaction.channel.id
+            veri["mesaj_id"] = gonderilen_mesaj.id
+            save_yetkili_data(veri)
+
+            await interaction.followup.send("✅ Yetkili ekip paneli bu kanala başarıyla kuruldu.", ephemeral=True)
         except Exception as e:
             await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
 
