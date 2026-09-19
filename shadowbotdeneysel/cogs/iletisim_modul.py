@@ -1,4 +1,4 @@
-﻿import os
+import os
 import json
 import discord
 from discord.ext import commands
@@ -13,45 +13,44 @@ def get_iletisim_data():
             "kanal_id": None,
             "mesaj_id": None,
             "sivil": (
-                "- <@&1461067392724631845>: <@672176793897140283>\n"
-                "- <@&1464654530753986825>: <@932021781684953099>\n"
-                "- <@&1461069664154030140> Müdürü: <@1205592076226396160>\n"
-                "- <@&1478401396008288398> Müdürü: <@808771812099489843>\n"
-                "- <@&1478400432421343253> Müdürü: <@1092860215923327157>\n"
-                "- <@&1461066782100951050> Müdürü: <@601808998991134731>\n"
-                "- <@&1461066816259620934> Müdürü: <@856084128028819516>\n"
-                "- <@&1493700213670416425> Müdürü: <@1326665605964627979>"
+                "> `Tesis Direktörü` <@672176793897140283>\n"
+                "> `Etik Komite Sorumlusu` <@1205592076226396160>\n"
+                "> `Hukuk Departmanı Sorumlusu` <@808771812099489843>\n"
+                "> `Üretim & Mühendislik Departmanı Müdürü` <@1092860215923327157>\n"
+                "> `Tıbbi Departman Başhekimi` <@1331647444928430210>\n"
+                "> `Bilimsel Departman Müdürü` <@856084128028819516>\n"
+                "> `Genel Servis Departmanı Müdürü` N/A"
             ),
             "sivil_kombatif": (
-                "- <@&1461067030030581925> Müdürü: <@582993463402954833>\n"
-                "- <@&1478400254469472256> Müdürü: <@932021781684953099>"
+                "> `İç Güvenlik Departmanı Müdürü` <@582993463402954833>\n"
+                "> `İstihbarat Teşkilatı Müdürü` <@932021781684953099>"
             ),
             "kombatif": (
-                "- <@&1540775555828547694> Takım Lideri: <@479992893952753674>\n"
-                "- <@&1461066745006522563> Lideri: <@692326152949202994>\n"
-                "- <@&1461121406589993134> Alay Lideri: <@932021781684953099>"
+                "> `Delta-43 Albayı` <@479992893952753674>\n"
+                "> `Güvenlik Departmanı Amiri` <@692326152949202994>\n"
+                "> `Nu-7 Albayı` <@932021781684953099>"
             ),
             "direktorler": (
-                "- <@&1461067356997681152> Direktörü: <@932021781684953099>\n"
-                "- <@&1461067030030581925> Direktörü: <@814092843093065730>\n"
-                "- <@&1461069664154030140> Direktörü: <@814092843093065730>\n"
-                "- <@&1461066816259620934> Direktörü: <@932021781684953099>\n"
-                "- <@&1478400432421343253> Direktörü: <@1092860215923327157>\n"
-                "- <@&1478401391654473801> Direktörü: <@1092860215923327157>\n"
-                "- <@&1478401386222981402> Direktörü: <@1092860215923327157>\n"
-                "- <@&1478401396008288398> Direktörü: <@814092843093065730>\n"
-                "- <@&1478400254469472256> Direktörü: <@932021781684953099>\n"
-                "- <@&1461066782100951050> Direktörü: N/A\n"
-                "- <@&1461121406589993134> Direktörü: MTF-CmD\n"
-                "- <@&1540775555828547694> Direktörü: <@479992893952753674>\n"
-                "- <@&1461066745006522563> Direktörü: <@932021781684953099>"
+                "> `Bilimsel Departman Direktörü` <@932021781684953099>\n"
+                "> `İç Güvenlik Departmanı Direktörü` <@814092843093065730>\n"
+                "> `Hukuk Departmanı Direktörü` <@814092843093065730>\n"
+                "> `İstihbarat Teşkilatı Direktörü` <@932021781684953099>\n"
+                "> `Üretim & Mühendislik Departmanı Direktörü` <@1092860215923327157>\n"
+                "> `Lojistik Departman Direktörü` <@1092860215923327157>\n"
+                "> `Üretim Departmanı Direktörü` <@1092860215923327157>\n"
+                "> `Etik Komite Başkanı` <@814092843093065730>\n"
+                "> `Yönetim Departmanı Direktörü` <@932021781684953099>\n"
+                "> `Tıbbi Departman Direktörü` N/A\n"
+                "> `Mobil Görev Gücü Direktörü` MTF-CmD\n"
+                "> `Güvenlik Departmanı Direktörü` <@479992893952753674>\n"
+                "> `Nu-7 Direktörü` <@932021781684953099>"
             ),
             "sikayet": (
-                "- Gamemaster ekibinden şikayetçiyseniz -> <@479992893952753674>\n"
-                "- <@479992893952753674>'dan şikayetçiyseniz -> <@932021781684953099>\n"
-                "- Yönetim Kurulundan şikayetçiyseniz -> <@1193247132447166605>\n"
-                "- <@1193247132447166605>'den şikayetçiyseniz -> <@932021781684953099>\n\n"
-                "*Gereken adımların atılabilmesi için bu zincire uyunuz.*"
+                "Gamemaster ekibinden şikayetçiyseniz <@814092843093065730>\n"
+                "<@814092843093065730>'dan şikayetçiyseniz <@479992893952753674>\n"
+                "Yönetim kurulundan şikayetçiyseniz <@1193247132447166605>\n"
+                "<@1193247132447166605>'den şikayetçiyseniz <@479992893952753674> gitmelisiniz ki yapılması gereken yapılsın.\n\n"
+                "Herhangi bir sorunuz varsa veya sıralamada sorun varsa TICKET açmalısınız. <#1461104282349736016>"
             )
         }
         with open(DATA_FILE, "w", encoding="utf-8") as f:
@@ -67,29 +66,20 @@ def save_iletisim_data(veri):
 
 def iletisim_embed_olustur(veri):
     embed = discord.Embed(
-        title="Kime Ulaşmalıyım?",
+        title="KİME ULAŞMALIYIM?",
         description=(
-            "Bu kanal, kimin ne ile ilgilendiğini veya ulaşmak istediğiniz yetkiliyi bulmanıza "
-            "yardımcı olmak ve gereksiz etiketlemeleri önlemek amacıyla oluşturulmuştur.\n"
-            "━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            "*Burada kimin neye veya istediğiniz kişinin kim olduğunu bulmanıza yardımcı olması "
+            "amacıyla ve boş yere insanlara gidip etiketlememeniz amacıyla kurulmuştur.*"
         ),
         color=0x2b2d31
     )
 
     embed.set_image(url="attachment://ulasim.png")
-    embed.add_field(name="Sivil Departmanlar", value=veri["sivil"], inline=False)
-    embed.add_field(name="Sivil / Kombatif Departmanlar", value=veri["sivil_kombatif"], inline=False)
-    embed.add_field(name="Kombatif Departmanlar", value=veri["kombatif"], inline=False)
-    embed.add_field(name="Departman Direktörleri", value=veri["direktorler"], inline=False)
-    embed.add_field(name="Hiyerarşik Şikayet ve İtiraz Zinciri", value=veri["sikayet"], inline=False)
-    embed.add_field(
-        name="Genel Destek Talepleri",
-        value=(
-            "Herhangi bir sorunuz veya sıralamayla ilgili bir itirazınız varsa doğrudan kişileri etiketlemek yerine "
-            "<#1461104282349736016> kanalından ticket açarak durumu bize iletebilirsiniz."
-        ),
-        inline=False
-    )
+    embed.add_field(name="SİVİL DEPARTMANLAR", value=veri["sivil"], inline=False)
+    embed.add_field(name="SİVİL/KOMBATİF DEPARTMANLAR", value=veri["sivil_kombatif"], inline=False)
+    embed.add_field(name="KOMBATİF DEPARTMANLAR", value=veri["kombatif"], inline=False)
+    embed.add_field(name="DEPARTMAN DİREKTÖRLERİ", value=veri["direktorler"], inline=False)
+    embed.add_field(name="\u200b", value=veri["sikayet"], inline=False)
     embed.set_footer(text="Shadow Roleplay • Departman Rehberi ve İletişim Şeması")
     return embed
 
