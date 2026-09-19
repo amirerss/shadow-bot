@@ -43,19 +43,31 @@ class KurulumMenusu(View):
         except Exception as e:
             await interaction.response.send_message(f"❌ Hata oluştu: {e}", ephemeral=True)
 
-    @discord.ui.button(label="📝 Formları Kur", style=discord.ButtonStyle.success, custom_id="kur_forum")
+@discord.ui.button(label="📝 Başvuru Formları Kur", style=discord.ButtonStyle.success, custom_id="kur_forum")
     async def btn_forum(self, interaction: discord.Interaction, button: Button):
+        await interaction.response.defer(ephemeral=True) # Resim yükleneceği için çökme önleyici
         try:
-            from cogs.forumlar import form_embed_olustur, get_forum_data, save_forum_data
+            from cogs.forumlar_modul import forum_embedler_olustur, get_forum_data, save_forum_data
+            import os
+            
             veri = get_forum_data()
-            embed = form_embed_olustur(veri)
-            gonderilen_mesaj = await interaction.channel.send(embed=embed)
+            embedler = forum_embedler_olustur(veri)
+            
+            dosya_yolu = os.path.join("textures", "forum.png")
+            if os.path.exists(dosya_yolu):
+                dosya = discord.File(dosya_yolu, filename="forum.png")
+                gonderilen_mesaj = await interaction.channel.send(file=dosya, embeds=embedler)
+            else:
+                gonderilen_mesaj = await interaction.channel.send(embeds=embedler)
+            
+            # JSON veritabanını yeni gönderilen mesajın ID'si ile güncelliyoruz
             veri["kanal_id"] = interaction.channel.id
             veri["mesaj_id"] = gonderilen_mesaj.id
             save_forum_data(veri)
-            await interaction.response.send_message("✅ Başvuru formları paneli bu kanala başarıyla kuruldu.", ephemeral=True)
+            
+            await interaction.followup.send("✅ Başvuru formları paneli bu kanala başarıyla kuruldu.", ephemeral=True)
         except Exception as e:
-            await interaction.response.send_message(f"❌ Hata oluştu: {e}", ephemeral=True)
+            await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
 
     @discord.ui.button(label="📜 Kuralları Kur", style=discord.ButtonStyle.danger, custom_id="kur_kurallar")
     async def btn_kurallar(self, interaction: discord.Interaction, button: Button):
