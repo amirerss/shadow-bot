@@ -4,7 +4,7 @@ from discord.ext import commands
 from discord import app_commands
 from discord.ui import View, Button
 
-YETKILI_ROLLER = [1496628714413228072]
+YETKILI_ROLLER = [1483443654772396093 , 1494377287666368602 , 1494377031432147055 ]
 
 LORE_METNI = """
 14 Ocak 1979 tarihinde Tesis-17'de bulunan ağır muhafaza kanadında bir **"bakım sabotajı"** gerçekleşti. Vakıf olayın şokunu atlatmaya çalışırken iş işten çoktan geçmişti. Kan dolu İGD sorguları, başarısız ve geç intikal eden kombatif ekipler... Var olan her şey sanki vakfın aleyhine işler gibiydi. 
