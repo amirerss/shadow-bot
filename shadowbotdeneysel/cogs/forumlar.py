@@ -42,9 +42,19 @@ def forum_embedler_olustur(veri):
     embed1.set_image(url="attachment://forum.png")
     
     # 2. Embed: Bilgilendirme ve linkler
+    aciklama_metni = (
+        '"Shadow Roleplay" bünyesinde bir oyuncudan daha fazlası olup, sunucunun tarihine adını kazımak istiyorsan; katılabileceğiniz yetkili ekiplerimiz;\n\n'
+        '**Moderasyon Ekibi:** Shadow Roleplay discord sunucusu ile ilgilenen ve genel huzuru sağlayan ekiptir. Kendi içerisinde farklı görev dallarına ayrılır.\n'
+        '**Gamemaster Ekibi:** Shadow Roleplay oyun içerisinde insanların rollerini zenginleştiren ve eventler tasarlayan ekiptir.\n'
+        '**Aktör Ekibi:** Shadow Roleplay oyun içerisinde SCP aktörlüğü veya başka departmanlarda görev yapan ekiptir.\n'
+        '**Geliştirici Ekibi:** Shadow Roleplay roblox ve sitelerin yapımı/gelişimi ile ilgilenen ekiptir.\n'
+        '**Etkinlik Yetkilisi:** Sunucu içerisindeki etkinlikleri planlayan ve yöneten ekiptir.\n\n'
+        '━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n'
+    )
+
     embed2 = discord.Embed(
         title="Bize Katılın!",
-        description="Aşağıda listelenen departmanlardan size uygun olanı seçerek başvuru formunu doldurabilirsiniz.\n\n",
+        description=aciklama_metni,
         color=0x2b2d31
     )
 
