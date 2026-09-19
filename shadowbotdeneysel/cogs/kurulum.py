@@ -176,6 +176,7 @@ class KurulumMenusu(View):
 
             if os.path.exists(dosya_yolu):
                 dosya = discord.File(dosya_yolu, filename="rolterimleri.png")
+                embed.set_image(url="attachment://rolterimleri.png")
                 await interaction.channel.send(content=mesaj_icerigi, embed=embed, file=dosya)
             else:
                 await interaction.channel.send(content=mesaj_icerigi, embed=embed)
