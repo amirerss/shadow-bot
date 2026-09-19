@@ -4,7 +4,7 @@ from discord import app_commands
 import json
 import os
 
-YETKILI_ROLLER = [1496628714413228072]
+YETKILI_ROLLER = [1483443654772396093 , 1494377287666368602 , 1494377031432147055 ]
 DATA_FILE = "yetkili_data.json"
 
 RANK_ORDER = {
