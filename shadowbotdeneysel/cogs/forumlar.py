@@ -4,16 +4,9 @@ from discord import app_commands
 import json
 import os
 
+# Güncel Yetkili Rolleri
 YETKILI_ROLLER = [1483443654772396093, 1494377287666368602, 1494377031432147055]
 
-# Özel Emojiler[cite: 9, 12]
-TIK_EMOJILERI = {
-    "Admin": "<:tik1:1548486735019909140>",
-    "Gamemaster": "<:tik2:1548486772109877269>",
-    "Geliştirici": "<:tik3:1548486837859782766>",
-    "Aktör": "<:tik4:1548486872710250586>",
-    "Etkinlik Sorumlusu": "✅" # Klasik tik eklendi
-}
 CARPI_EMOJI = "<:carpi:1548486925881581588>"
 
 # --- JSON VERİTABANI YÖNETİMİ ---
@@ -25,10 +18,10 @@ def get_forum_data():
             "mesaj_id": None,
             "formlar": {
                 "Gamemaster": {"durum": "Aktif", "link": "https://link_ekle.com"},
-                "Admin": {"durum": "Aktif", "link": "https://link_ekle.com"},
+                "Moderasyon Ekibi": {"durum": "Aktif", "link": "https://link_ekle.com"},
                 "Aktör": {"durum": "Aktif", "link": "https://link_ekle.com"},
                 "Geliştirici": {"durum": "Aktif", "link": "https://link_ekle.com"},
-                "Etkinlik Sorumlusu": {"durum": "Aktif", "link": "https://link_ekle.com"} # Yeni bölüm eklendi
+                "Etkinlik Yetkilisi": {"durum": "Aktif", "link": "https://link_ekle.com"}
             }
         }
         with open(dosya_adi, "w", encoding="utf-8") as f:
@@ -42,10 +35,16 @@ def save_forum_data(veri):
     with open("forum_data.json", "w", encoding="utf-8") as f:
         json.dump(veri, f, indent=4, ensure_ascii=False)
 
-# --- GÖMÜLÜ MESAJ (EMBED) OLUŞTURUCU ---
-def form_embed_olustur(veri):
-    embed = discord.Embed(
+# --- ÇOKLU GÖMÜLÜ MESAJ (EMBED) OLUŞTURUCU ---
+def forum_embedler_olustur(veri):
+    # 1. Embed: Sadece kapak fotoğrafı
+    embed1 = discord.Embed(color=0x2b2d31)
+    embed1.set_image(url="attachment://forum.png")
+    
+    # 2. Embed: Bilgilendirme ve linkler
+    embed2 = discord.Embed(
         title="Bize Katılın!",
+        description="Aşağıda listelenen departmanlardan size uygun olanı seçerek başvuru formunu doldurabilirsiniz.\n\n",
         color=0x2b2d31
     )
 
@@ -53,19 +52,19 @@ def form_embed_olustur(veri):
     for rol, ayarlar in veri["formlar"].items():
         is_aktif = ayarlar["durum"].lower() == "aktif"
 
-        # Aktifse role özel tik emojisi, inaktifse çarpı emojisi atanır[cite: 9, 12]
-        durum_emoji = TIK_EMOJILERI.get(rol, "✅") if is_aktif else CARPI_EMOJI
+        # Aktifse klasik tik, inaktifse özel çarpı emojisi atanır
+        durum_emoji = "✅" if is_aktif else CARPI_EMOJI
         durum_metni = f"Aktif {durum_emoji}" if is_aktif else f"İnaktif {durum_emoji}"
 
         link = ayarlar["link"]
 
-        # Format: Aktif <emoji> | **Rol Alım Formu** <emoji> [tıklayın](link)[cite: 9, 12]
-        metin += f"{durum_metni} | **{rol} Alım Formu** {durum_emoji} [tıklayın]({link})\n\n"
+        # Format: Aktif ✅ | **Gamemaster Alım Formu** [tıklayın](link)
+        metin += f"{durum_metni} | **{rol} Alım Formu** [tıklayın]({link})\n\n"
 
-    embed.description = metin
-    embed.set_footer(text="Shadow Roleplay • Başvuru Formları")
-    return embed
-
+    embed2.description += metin
+    embed2.set_footer(text="Shadow Roleplay • Başvuru Formları")
+    
+    return [embed1, embed2]
 
 class ForumlarCog(commands.Cog):
     def __init__(self, bot):
@@ -80,10 +79,10 @@ class ForumlarCog(commands.Cog):
     )
     @app_commands.choices(forum=[
         app_commands.Choice(name="Gamemaster", value="Gamemaster"),
-        app_commands.Choice(name="Admin", value="Admin"),
+        app_commands.Choice(name="Moderasyon Ekibi", value="Moderasyon Ekibi"),
         app_commands.Choice(name="Aktör", value="Aktör"),
         app_commands.Choice(name="Geliştirici", value="Geliştirici"),
-        app_commands.Choice(name="Etkinlik Sorumlusu", value="Etkinlik Sorumlusu") # Menüye eklendi
+        app_commands.Choice(name="Etkinlik Yetkilisi", value="Etkinlik Yetkilisi")
     ], yeni_durum=[
         app_commands.Choice(name="Aktif", value="Aktif"),
         app_commands.Choice(name="İnaktif", value="İnaktif")
@@ -98,10 +97,10 @@ class ForumlarCog(commands.Cog):
     )
     @app_commands.choices(forum=[
         app_commands.Choice(name="Gamemaster", value="Gamemaster"),
-        app_commands.Choice(name="Admin", value="Admin"),
+        app_commands.Choice(name="Moderasyon Ekibi", value="Moderasyon Ekibi"),
         app_commands.Choice(name="Aktör", value="Aktör"),
         app_commands.Choice(name="Geliştirici", value="Geliştirici"),
-        app_commands.Choice(name="Etkinlik Sorumlusu", value="Etkinlik Sorumlusu") # Menüye eklendi
+        app_commands.Choice(name="Etkinlik Yetkilisi", value="Etkinlik Yetkilisi")
     ])
     async def link_guncelle(self, interaction: discord.Interaction, forum: app_commands.Choice[str], yeni_link: str):
         if not (yeni_link.startswith("http://") or yeni_link.startswith("https://")):
@@ -117,7 +116,7 @@ class ForumlarCog(commands.Cog):
         veri = get_forum_data()
 
         if veri["mesaj_id"] is None or veri["kanal_id"] is None:
-            return await interaction.response.send_message("❌ Önce merkezi `/kurulum` panelini kullanarak formu kurmalısın.", ephemeral=True)
+            return await interaction.response.send_message("❌ Önce `/kurulum` panelinden formu kurmalısın.", ephemeral=True)
 
         veri["formlar"][forum_adi][ayar_turu] = yeni_deger
         save_forum_data(veri)
@@ -126,8 +125,8 @@ class ForumlarCog(commands.Cog):
             kanal = self.bot.get_channel(veri["kanal_id"])
             mesaj = await kanal.fetch_message(veri["mesaj_id"])
 
-            yeni_embed = form_embed_olustur(veri)
-            await mesaj.edit(embed=yeni_embed)
+            yeni_embedler = forum_embedler_olustur(veri)
+            await mesaj.edit(embeds=yeni_embedler)
 
             await interaction.response.send_message(f"✅ **{forum_adi}** formunun **{ayar_turu}** ayarı başarıyla güncellendi.", ephemeral=True)
         except discord.NotFound:
