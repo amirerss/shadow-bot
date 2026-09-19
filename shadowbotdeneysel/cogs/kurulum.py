@@ -171,15 +171,27 @@ class KurulumMenusu(View):
             )
             embed.set_footer(text="Shadow Roleplay • Rol Terimleri")
 
+            # Uyarı metni artık ayrı bir embed box olarak en altta gösteriliyor
+            uyari_embed = discord.Embed(
+                description=uyari_metni,
+                color=0x2b2d31
+            )
+
             dosya_yolu = os.path.join("textures", "rolterimleri.png")
-            mesaj_icerigi = f"{uyari_metni}\n\n{link_metni}"
 
             if os.path.exists(dosya_yolu):
                 dosya = discord.File(dosya_yolu, filename="rolterimleri.png")
                 embed.set_image(url="attachment://rolterimleri.png")
-                await interaction.channel.send(content=mesaj_icerigi, embed=embed, file=dosya)
+                await interaction.channel.send(
+                    content=link_metni,
+                    embeds=[embed, uyari_embed],
+                    file=dosya
+                )
             else:
-                await interaction.channel.send(content=mesaj_icerigi, embed=embed)
+                await interaction.channel.send(
+                    content=link_metni,
+                    embeds=[embed, uyari_embed]
+                )
                 
             await interaction.followup.send("✅ Rol Terimleri paneli bu kanala başarıyla kuruldu.", ephemeral=True)
         except Exception as e:
