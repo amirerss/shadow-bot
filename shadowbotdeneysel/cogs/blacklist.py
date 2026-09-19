@@ -3,7 +3,7 @@ from discord.ext import commands
 from discord import app_commands
 
 BLACKLIST_KANAL_ID = 1469711710251126954  
-YETKILI_ROLLER = [1496628714413228072]
+YETKILI_ROLLER = [1483443654772396093 , 1494377287666368602 , 1494377031432147055 ]
 
 class BlacklistCog(commands.Cog):
     def __init__(self, bot):
