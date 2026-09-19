@@ -1,19 +1,22 @@
-﻿import discord
+import discord
 from discord.ext import commands
 from discord import app_commands
 import json
 import os
 
-YETKILI_ROLLER = [1483443654772396093 , 1494377287666368602 , 1494377031432147055 ]
+YETKILI_ROLLER = [1545845833826697296, 1547908920964681729, 1545844425882865766]
 
+# Özel Emojiler[cite: 9, 12]
 TIK_EMOJILERI = {
-    "Mod": "<:tik1:1548486735019909140>",
+    "Admin": "<:tik1:1548486735019909140>",
     "Gamemaster": "<:tik2:1548486772109877269>",
     "Geliştirici": "<:tik3:1548486837859782766>",
-    "Aktör": "<:tik4:1548486872710250586>"
+    "Aktör": "<:tik4:1548486872710250586>",
+    "Etkinlik Sorumlusu": "✅" # Klasik tik eklendi
 }
 CARPI_EMOJI = "<:carpi:1548486925881581588>"
 
+# --- JSON VERİTABANI YÖNETİMİ ---
 def get_forum_data():
     dosya_adi = "forum_data.json"
     if not os.path.exists(dosya_adi):
@@ -22,9 +25,10 @@ def get_forum_data():
             "mesaj_id": None,
             "formlar": {
                 "Gamemaster": {"durum": "Aktif", "link": "https://link_ekle.com"},
-                "Mod": {"durum": "Aktif", "link": "https://link_ekle.com"},
+                "Admin": {"durum": "Aktif", "link": "https://link_ekle.com"},
                 "Aktör": {"durum": "Aktif", "link": "https://link_ekle.com"},
-                "Geliştirici": {"durum": "Aktif", "link": "https://link_ekle.com"}
+                "Geliştirici": {"durum": "Aktif", "link": "https://link_ekle.com"},
+                "Etkinlik Sorumlusu": {"durum": "Aktif", "link": "https://link_ekle.com"} # Yeni bölüm eklendi
             }
         }
         with open(dosya_adi, "w", encoding="utf-8") as f:
@@ -38,6 +42,7 @@ def save_forum_data(veri):
     with open("forum_data.json", "w", encoding="utf-8") as f:
         json.dump(veri, f, indent=4, ensure_ascii=False)
 
+# --- GÖMÜLÜ MESAJ (EMBED) OLUŞTURUCU ---
 def form_embed_olustur(veri):
     embed = discord.Embed(
         title="Bize Katılın!",
@@ -48,11 +53,13 @@ def form_embed_olustur(veri):
     for rol, ayarlar in veri["formlar"].items():
         is_aktif = ayarlar["durum"].lower() == "aktif"
 
+        # Aktifse role özel tik emojisi, inaktifse çarpı emojisi atanır[cite: 9, 12]
         durum_emoji = TIK_EMOJILERI.get(rol, "✅") if is_aktif else CARPI_EMOJI
         durum_metni = f"Aktif {durum_emoji}" if is_aktif else f"İnaktif {durum_emoji}"
 
         link = ayarlar["link"]
 
+        # Format: Aktif <emoji> | **Rol Alım Formu** <emoji> [tıklayın](link)[cite: 9, 12]
         metin += f"{durum_metni} | **{rol} Alım Formu** {durum_emoji} [tıklayın]({link})\n\n"
 
     embed.description = metin
@@ -66,7 +73,6 @@ class ForumlarCog(commands.Cog):
 
     forum_grup = app_commands.Group(name="forumlar", description="Alım formları yönetim sistemi")
 
-
     @forum_grup.command(name="durum", description="Formun durumunu Aktif veya İnaktif olarak değiştirir.")
     @app_commands.describe(
         forum="Hangi formun durumunu güncelleyeceksin?",
@@ -74,9 +80,10 @@ class ForumlarCog(commands.Cog):
     )
     @app_commands.choices(forum=[
         app_commands.Choice(name="Gamemaster", value="Gamemaster"),
-        app_commands.Choice(name="Mod", value="Mod"),
+        app_commands.Choice(name="Admin", value="Admin"),
         app_commands.Choice(name="Aktör", value="Aktör"),
-        app_commands.Choice(name="Geliştirici", value="Geliştirici")
+        app_commands.Choice(name="Geliştirici", value="Geliştirici"),
+        app_commands.Choice(name="Etkinlik Sorumlusu", value="Etkinlik Sorumlusu") # Menüye eklendi
     ], yeni_durum=[
         app_commands.Choice(name="Aktif", value="Aktif"),
         app_commands.Choice(name="İnaktif", value="İnaktif")
@@ -91,9 +98,10 @@ class ForumlarCog(commands.Cog):
     )
     @app_commands.choices(forum=[
         app_commands.Choice(name="Gamemaster", value="Gamemaster"),
-        app_commands.Choice(name="Mod", value="Mod"),
+        app_commands.Choice(name="Admin", value="Admin"),
         app_commands.Choice(name="Aktör", value="Aktör"),
-        app_commands.Choice(name="Geliştirici", value="Geliştirici")
+        app_commands.Choice(name="Geliştirici", value="Geliştirici"),
+        app_commands.Choice(name="Etkinlik Sorumlusu", value="Etkinlik Sorumlusu") # Menüye eklendi
     ])
     async def link_guncelle(self, interaction: discord.Interaction, forum: app_commands.Choice[str], yeni_link: str):
         if not (yeni_link.startswith("http://") or yeni_link.startswith("https://")):
