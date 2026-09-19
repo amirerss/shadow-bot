@@ -1,0 +1,27 @@
+{
+    "kanal_id": 1545741295954169957,
+    "mesaj_id": 1550214674249814118,
+    "ekip": [
+        {
+            "rutbe": "Baş GM",
+            "isim": "Ozy",
+            "roblox": "ozymandiasnow",
+            "tarih": "16/04/2024",
+            "yetki": "Tam Yetki"
+        },
+        {
+            "rutbe": "Üst Düzey GM",
+            "isim": "Deno",
+            "roblox": "denoizm",
+            "tarih": "17/04/2024",
+            "yetki": "Tam Yetki"
+        },
+        {
+            "rutbe": "Denetmen",
+            "isim": "Junbun",
+            "roblox": "dikacuu",
+            "tarih": "04.06.2026",
+            "yetki": "Yönetim / Denetim"
+        }
+    ]
+}
