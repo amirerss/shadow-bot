@@ -65,7 +65,7 @@ class KurulumMenusu(View):
 
     @discord.ui.button(label="📝 Başvuru Formları Kur", style=discord.ButtonStyle.success, custom_id="kur_forum")
     async def btn_forum(self, interaction: discord.Interaction, button: Button):
-        await interaction.response.defer(ephemeral=True) # Resim yükleneceği için çökme önleyici
+        await interaction.response.defer(ephemeral=True) 
         try:
             from cogs.forumlar_modul import forum_embedler_olustur, get_forum_data, save_forum_data
             import os
@@ -97,7 +97,6 @@ class KurulumMenusu(View):
             dosyalar = []
             eksik_dosyalar = []
             
-            # Gerekli 3 PNG dosyasını kontrol ediyoruz
             for dosya_adi in ["banner.png", "topluluk.png", "oyun.png"]:
                 yol = os.path.join("textures", dosya_adi)
                 if os.path.exists(yol):
@@ -125,54 +124,92 @@ class KurulumMenusu(View):
         except Exception as e:
             await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
 
-    # --- YENİ BÖLÜM: ROL TERİMLERİ KOMUTU ---
     @discord.ui.button(label="📖 Rol Terimleri Kur", style=discord.ButtonStyle.secondary, custom_id="kur_rolterimleri")
     async def btn_rolterimleri(self, interaction: discord.Interaction, button: Button):
         await interaction.response.defer(ephemeral=True)
         try:
             uyari_metni = "⚠️   ```Sunucumuza girip rol yapmaya başlamadan önce mutlaka bu kanalı okumanız ve kuralları anlamanızı beklemekteyiz. Sunucuya girip rol yapmaya başladığınızda bu kuralları bildiğiniz ve okuduğunuz varsayılmaktadır.```   "
+            link_metni = "<:shadowroleplay:1503056096552685638> **Rol terimlerinin daha detaylı hali için:** <:shadowroleplay:1503056096552685638>\nhttps://docs.google.com/document/d/1jyY5_mfLW9jdPucGdslNwLY22TrHsCeGu0qkaG7vavI/edit?tab=t.0"
+
+            terimler = (
+                "**OOC:** Rol dışı. Gerçek hayat konuşmaları ve rolü etkilemeyen şeyler.\n\n"
+                "**IC:** Rol içi. Karakterin yaptığı her şey.\n\n"
+                "**/me:** Karakterinin yaptığı hareketi yazarsın.\n"
+                "**Örnek:** /me kelepçeyi çıkarıp kişiyi kelepçeler.\n\n"
+                "**/do:** Ortamı anlatır veya soru sorar.\n"
+                "**Örnek:** /do Üzerinde ne var?\n\n"
+                "**//:** OOC mesaj atmak için kullanılır.\n\n"
+                "**Fail RP:** Mantıksız ve gerçekçi olmayan rol yapmak.\n\n"
+                "**Metagaming (MG):** Rol dışından öğrendiğin bilgiyi rolde kullanmak.\n\n"
+                "**Powergaming (PG):** Karakterinin yapamayacağı şeyleri yapması.\n\n"
+                "**Combat Log (CL):** Ceza, ölüm veya sorgudan kaçmak için oyundan çıkmak.\n\n"
+                "**Fear RP:** Korkulacak durumda karakterinin korkmasını oynamak.\n\n"
+                "**Pain RP:** Yaralandığında acıyı role yansıtmak.\n\n"
+                "**CK (Character Kill):** Karakterin kalıcı olarak ölmesi.\n\n"
+                "**NLR (New Life Rule):** Öldükten sonra eski hayatını ve yaşananları unutmak.\n\n"
+                "**IC-OOC Mixing:** Gerçek hayat ile rolü birbirine karıştırmak.\n\n"
+                "**RDM (Random Deathmatch):** Sebepsiz yere saldırmak veya öldürmek.\n\n"
+                "**Retarded RP:** Troll, aşırı saçma ve role uymayan davranışlar yapmak.\n\n"
+                "**Refuse RP:** Mantıklı sebep olmadan rolü reddetmek.\n\n"
+                "**Ghost RP:** IC'de gerçekleştirilmemiş bir olaya hayali bir durum veya eylem entegre ederek onu yaşanılmış ve gerçekleşmiş gibi göstermek.\n\n"
+                "**Shoot to Kill:** Rol yapmadan direkt çatışıp öldürmeye çalışmak.\n\n"
+                "**Shoot to Roleplay:** /me ve /do kullanarak yapılan, rol destekli çatışma.\n\n"
+                "**GOOA (Gun Out Of Ass):** Üzerinde olmadığı halde silah çıkarmak veya alınan silahı tekrar kullanmak.\n\n"
+                "**Revenge Kill (RK):** Seni öldüren kişiden yeniden doğduktan sonra intikam almaya çalışmak. NLR ihlalidir."
+            )
 
             embed = discord.Embed(
                 title="📖 Rol Terimleri",
+                description=terimler,
                 color=0x2b2d31
             )
-            embed.add_field(name="OOC", value="Rol dışı. Gerçek hayat konuşmaları ve rolü etkilemeyen şeyler.", inline=False)
-            embed.add_field(name="IC", value="Rol içi. Karakterin yaptığı her şey.", inline=False)
-            embed.add_field(name="/me", value="Karakterinin yaptığı hareketi yazarsın.\n**Örnek:** /me kelepçeyi çıkarıp kişiyi kelepçeler.", inline=False)
-            embed.add_field(name="/do", value="Ortamı anlatır veya soru sorar.\n**Örnek:** /do Üzerinde ne var?", inline=False)
-            embed.add_field(name="//", value="OOC mesaj atmak için kullanılır.", inline=False)
-            embed.add_field(name="Fail RP", value="Mantıksız ve gerçekçi olmayan rol yapmak.", inline=False)
-            embed.add_field(name="Metagaming (MG)", value="Rol dışından öğrendiğin bilgiyi rolde kullanmak.", inline=False)
-            embed.add_field(name="Powergaming (PG)", value="Karakterinin yapamayacağı şeyleri yapması.", inline=False)
-            embed.add_field(name="Combat Log (CL)", value="Ceza, ölüm veya sorgudan kaçmak için oyundan çıkmak.", inline=False)
-            embed.add_field(name="Fear RP", value="Korkulacak durumda karakterinin korkmasını oynamak.", inline=False)
-            embed.add_field(name="Pain RP", value="Yaralandığında acıyı role yansıtmak.", inline=False)
-            embed.add_field(name="CK (Character Kill)", value="Karakterin kalıcı olarak ölmesi.", inline=False)
-            embed.add_field(name="NLR (New Life Rule)", value="Öldükten sonra eski hayatını ve yaşananları unutmak.", inline=False)
-            embed.add_field(name="IC-OOC Mixing", value="Gerçek hayat ile rolü birbirine karıştırmak.", inline=False)
-            embed.add_field(name="RDM (Random Deathmatch)", value="Sebepsiz yere saldırmak veya öldürmek.", inline=False)
-            embed.add_field(name="Retarded RP", value="Troll, aşırı saçma ve role uymayan davranışlar yapmak.", inline=False)
-            embed.add_field(name="Refuse RP", value="Mantıklı sebep olmadan rolü reddetmek.", inline=False)
-            embed.add_field(name="Ghost RP", value="IC'de gerçekleştirilmemiş bir olaya hayali bir durum veya eylem entegre ederek onu yaşanılmış ve gerçekleşmiş gibi göstermek.", inline=False)
-            embed.add_field(name="Shoot to Kill", value="Rol yapmadan direkt çatışıp öldürmeye çalışmak.", inline=False)
-            embed.add_field(name="Shoot to Roleplay", value="/me ve /do kullanarak yapılan, rol destekli çatışma.", inline=False)
-            embed.add_field(name="GOOA (Gun Out Of Ass)", value="Üzerinde olmadığı halde silah çıkarmak veya alınan silahı tekrar kullanmak.", inline=False)
-            embed.add_field(name="Revenge Kill (RK)", value="Seni öldüren kişiden yeniden doğduktan sonra intikam almaya çalışmak. NLR ihlalidir.", inline=False)
-            
-            link_metni = "\n<:shadowroleplay:1503056096552685638> Rol terimlerinin daha detaylı hali için: <:shadowroleplay:1503056096552685638>\nhttps://docs.google.com/document/d/1jyY5_mfLW9jdPucGdslNwLY22TrHsCeGu0qkaG7vavI/edit?tab=t.0"
+            embed.set_footer(text="Shadow Roleplay • Rol Terimleri")
 
             dosya_yolu = os.path.join("textures", "rolterimleri.png")
+            mesaj_icerigi = f"{uyari_metni}\n\n{link_metni}"
+
             if os.path.exists(dosya_yolu):
                 dosya = discord.File(dosya_yolu, filename="rolterimleri.png")
-                # Uyarı, embed, link ve görsel (dosya) tek mesajda birleşiyor
-                await interaction.channel.send(content=f"{uyari_metni}\n\n{link_metni}", embed=embed, file=dosya)
+                await interaction.channel.send(content=mesaj_icerigi, embed=embed, file=dosya)
             else:
-                await interaction.channel.send(content=f"{uyari_metni}\n\n{link_metni}", embed=embed)
+                await interaction.channel.send(content=mesaj_icerigi, embed=embed)
                 
             await interaction.followup.send("✅ Rol Terimleri paneli bu kanala başarıyla kuruldu.", ephemeral=True)
         except Exception as e:
             await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
 
+    # --- YENİ BÖLÜM: SUNUCU HAKKINDA KOMUTU ---
+    @discord.ui.button(label="🌍 Sunucu Hakkında Kur", style=discord.ButtonStyle.primary, custom_id="kur_hakkinda")
+    async def btn_hakkinda(self, interaction: discord.Interaction, button: Button):
+        await interaction.response.defer(ephemeral=True)
+        try:
+            hakkinda_metni = (
+                "## Vizyonumuz;\n"
+                "Roblox SCP:RP topluluğunda sadece çatışma odaklı olmayan, hikaye anlatımının ve karakter gelişiminin ön planda olduğu kaliteli bir rol ortamı sağlamak.\n\n"
+                "## Misyonumuz;\n"
+                "Oyuncularımıza adil, kurallara bağlı ve disiplinli bir yetkili kadro rehberliğinde sürdürülebilir bir roleplay tecrübesi sunmak. Tesis içerisindeki tüm departmanların gerçekçi bir işleyiş ile aktif çalıştığı, her oyuncunun emeğinin ve rolünün karşılığını aldığı bir düzen oluşturmak.\n\n"
+                "## Farkımız;\n"
+                "* Detaylı lore ve gerçekçilik: Sadece silah çekip ateş etmek veya etrafta aura kasmak değil. Departmanların evrak takibi, soruşturmalar, mahkemelerden protokol yönetimine kadar derinlemesine bir rol imkanı sunuyoruz.\n"
+                "* Yetkili Kadromuz: Yetkili kadromuz ve gamemaster ekibimiz, oyunculara güç gösterisi yapmak için değil, kaliteli rol paslamak ve düzeni sağlamak için görev yaparlar.\n"
+                "* Sürekli Gelişim: Oyuncu topluluğumuzun geri bildirimlerini dikkate alınarak sistemlerimizi ve haritamızı düzenli olarak güncelliyoruz.\n\n"
+                "**Bağlantılarımız:**\n"
+                "* <:Youtube:1546117775003623444> Youtube Hesabımız 👉 [Tıklayın](https://www.youtube.com/@ScpShadowRoleplay)\n"
+                "* <:instagram:1546117822164238458> İnstagram Hesabımız 👉 [Tıklayın](https://www.instagram.com/scpshadowroleplay)\n"
+                "* <:tiktok:1546117879894773842> Tiktok Hesabımız 👉 [Tıklayın](https://www.tiktok.com/@scpshadowroleplay)\n"
+                "* <:Roblox:1546118729560100864> Roblox Grubumuz 👉 [Tıklayın](https://www.roblox.com/tr/communities/35886894/Scp-Shadow-Roleplay#!/about)"
+            )
+
+            embed = discord.Embed(
+                title="🌍 Sunucu Hakkında",
+                description=hakkinda_metni,
+                color=0x2b2d31
+            )
+            embed.set_footer(text="Shadow Roleplay • Kurumsal & İletişim")
+
+            await interaction.channel.send(embed=embed)
+            await interaction.followup.send("✅ 'Sunucu Hakkında' paneli bu kanala başarıyla kuruldu.", ephemeral=True)
+        except Exception as e:
+            await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
 
 # --- COG TANIMLAMASI ---
 class KurulumCog(commands.Cog):
@@ -181,7 +218,6 @@ class KurulumCog(commands.Cog):
 
     @app_commands.command(name="kurulum", description="Tüm modüllerin tek bir noktadan kurulmasını sağlayan merkezi menü.")
     async def ana_kurulum(self, interaction: discord.Interaction):
-        # Yetki Kontrolü
         kullanici_rolleri = [rol.id for rol in interaction.user.roles]
         if not any(rol in YETKILI_ROLLER for rol in kullanici_rolleri):
             return await interaction.response.send_message("❌ Bu komutu kullanmak için yetkiniz yok!", ephemeral=True)
