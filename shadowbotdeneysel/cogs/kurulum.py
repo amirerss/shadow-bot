@@ -135,7 +135,7 @@ class KurulumMenusu(View):
                 "bu kuralları bildiğiniz ve okuduğunuz varsayılmaktadır.```   "
             )
             
-            link_metni = "<:shadowroleplay:1503056096552685638> **Rol terimlerinin daha detaylı hali için:** <:shadowroleplay:1503056096552685638>\nhttps://docs.google.com/document/d/1jyY5_mfLW9jdPucGdslNwLY22TrHsCeGu0qkaG7vavI/edit?tab=t.0"
+            docs_link = "https://docs.google.com/document/d/1jyY5_mfLW9jdPucGdslNwLY22TrHsCeGu0qkaG7vavI/edit?tab=t.0"
 
             terimler = (
                 "**OOC:** Rol dışı. Gerçek hayat konuşmaları ve rolü etkilemeyen şeyler.\n\n"
@@ -171,9 +171,9 @@ class KurulumMenusu(View):
             )
             embed.set_footer(text="Shadow Roleplay • Rol Terimleri")
 
-            # Uyarı metni artık ayrı bir embed box olarak en altta gösteriliyor
+            # Uyarı metni ve detaylı link artık ayrı bir embed box olarak en altta gösteriliyor
             uyari_embed = discord.Embed(
-                description=uyari_metni,
+                description=f"{uyari_metni}\n\n**Detaylı Rol Terim Bilgisi için :** [Tıklayın]({docs_link})",
                 color=0x2b2d31
             )
 
@@ -183,13 +183,11 @@ class KurulumMenusu(View):
                 dosya = discord.File(dosya_yolu, filename="rolterimleri.png")
                 embed.set_image(url="attachment://rolterimleri.png")
                 await interaction.channel.send(
-                    content=link_metni,
                     embeds=[embed, uyari_embed],
                     file=dosya
                 )
             else:
                 await interaction.channel.send(
-                    content=link_metni,
                     embeds=[embed, uyari_embed]
                 )
                 
