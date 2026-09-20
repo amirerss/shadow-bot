@@ -302,13 +302,13 @@ Oyuncularımıza adil, kurallara bağlı ve disiplinli bir yetkili kadro rehberl
             await interaction.followup.send("✅ Kişisel Kadro paneli başarıyla bu kanala kuruldu.", ephemeral=True)
         except Exception as e:
             await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
-    @discord.ui.button(label="Bildirim Rolleri Kur", style=discord.ButtonStyle.secondary, custom_id="kur_bildirim")
+@discord.ui.button(label="🔔 Bildirim Rolleri Kur", style=discord.ButtonStyle.secondary, custom_id="kur_bildirim")
     async def btn_bildirim(self, interaction: discord.Interaction, button: Button):
         await interaction.response.defer(ephemeral=True)
         try:
             from cogs.bildirim_rolleri_modul import save_bildirim_data
+            import os
             
-            # Üçlü tırnak kullanarak metindeki satır atlamalarını koruduk
             metin = """Aşağıdan sunucumuzdaki deneyiminizi özelleştirmek adına, neler için etiket almak istediğinizi seçebilirsiniz. Her rolün detaylı açıklaması ve aşağı bölümden nasıl alınacağı yazmaktadır. 
 
 **@SSU Bildirim:** Sunucumuzda açılan SSU'ların (Server Start Up) ne zaman açılacağı veya açıldığını duyurmak için kullanılır. 
@@ -336,7 +336,17 @@ Oyuncularımıza adil, kurallara bağlı ve disiplinli bir yetkili kadro rehberl
             )
             embed.set_footer(text="Shadow Roleplay • Tepki Rol Sistemi")
             
-            gonderilen_mesaj = await interaction.channel.send(embed=embed)
+            # --- EMBED İÇİNE FOTOĞRAF EKLEME ---
+            dosya_yolu = os.path.join("textures", "bildirim.png")
+            
+            if os.path.exists(dosya_yolu):
+                dosya = discord.File(dosya_yolu, filename="bildirim.png")
+                # Görseli embed kutusunun alt kısmında tam boy göstermek için set_image kullanıyoruz
+                embed.set_image(url="attachment://bildirim.png") 
+                
+                gonderilen_mesaj = await interaction.channel.send(embed=embed, file=dosya)
+            else:
+                gonderilen_mesaj = await interaction.channel.send(embed=embed)
             
             # Botun mesajın altına sırasıyla atacağı özel tepkiler
             emojiler = [
@@ -352,10 +362,9 @@ Oyuncularımıza adil, kurallara bağlı ve disiplinli bir yetkili kadro rehberl
             # Sistemi aktifleştirmek için mesaj ve kanal ID'sini veritabanına kaydet
             save_bildirim_data(interaction.channel.id, gonderilen_mesaj.id)
             
-            await interaction.followup.send("Bildirim Rolleri paneli bu kanala başarıyla kuruldu.", ephemeral=True)
+            await interaction.followup.send("✅ Bildirim Rolleri paneli fotoğraflı olarak kuruldu.", ephemeral=True)
         except Exception as e:
-            await interaction.followup.send(f"Hata oluştu: {e}\n*(bildirim_rolleri_modul.py dosyasını kontrol edin)*", ephemeral=True)
-
+            await interaction.followup.send(f"❌ Hata oluştu: {e}\n*(bildirim_rolleri_modul.py dosyasını kontrol edin)*", ephemeral=True)
 
 class KurulumCog(commands.Cog):
     def __init__(self, bot):
