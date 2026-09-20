@@ -307,8 +307,6 @@ Oyuncularımıza adil, kurallara bağlı ve disiplinli bir yetkili kadro rehberl
     async def btn_bildirim(self, interaction: discord.Interaction, button: Button):
         await interaction.response.defer(ephemeral=True)
         try:
-            from cogs.bildirim_rolleri_modul import save_bildirim_data
-
             metin = (
                 "Aşağıdan sunucumuzdaki deneyiminizi özelleştirmek adına, neler için etiket almak istediğinizi "
                 "seçebilirsiniz. Her rolün detaylı açıklaması ve aşağı bölümden nasıl alınacağı yazmaktadır.\n\n"
@@ -345,23 +343,13 @@ Oyuncularımıza adil, kurallara bağlı ve disiplinli bir yetkili kadro rehberl
             else:
                 gonderilen_mesaj = await interaction.channel.send(embed=embed)
 
-            # Botun mesajın altına sırasıyla atacağı özel tepkiler
-            emojiler = [
-                "<:bir:1551003852612829285>",
-                "<:iki:1551003890944835600>",
-                "<:uc:1551003931683856454>",
-                "<:dort:1551003963157909504>",
-                "<:bes:1551003990588923974>"
-            ]
-            for emoji in emojiler:
-                await gonderilen_mesaj.add_reaction(emoji)
-
-            # Sistemi aktifleştirmek için mesaj ve kanal ID'sini veritabanına kaydet
-            save_bildirim_data(interaction.channel.id, gonderilen_mesaj.id)
-
-            await interaction.followup.send("✅ Bildirim Rolleri paneli fotoğraflı olarak kuruldu.", ephemeral=True)
+            await interaction.followup.send(
+                "✅ Bildirim Rolleri paneli fotoğraflı olarak kuruldu.\n"
+                "*Reaksiyonları ve rol atamasını Carl-bot üzerinden bu mesaja kurmayı unutma.*",
+                ephemeral=True
+            )
         except Exception as e:
-            await interaction.followup.send(f"❌ Hata oluştu: {e}\n*(bildirim_rolleri_modul.py dosyasını kontrol edin)*", ephemeral=True)
+            await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
 
 
 class KurulumCog(commands.Cog):
