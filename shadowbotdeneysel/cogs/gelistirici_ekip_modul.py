@@ -1,4 +1,4 @@
-﻿import discord
+import discord
 from discord.ext import commands
 from discord import app_commands
 import json
@@ -46,10 +46,10 @@ def save_gelistirici_data(veri):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(veri, f, indent=4, ensure_ascii=False)
 
-def gelistirici_embed_olustur(veri):
+def gelistirici_embed_olustur(veri, aciklama_goster=True):
     embed = discord.Embed(
         title="Geliştirici Ekip Kadrosu",
-        description="Güncel geliştirici kadrosu ve katkıları aşağıda belirtilmiştir.\n\n",
+        description="Güncel geliştirici kadrosu ve katkıları aşağıda belirtilmiştir.\n\n" if aciklama_goster else "",
         color=0x2b2d31
     )
 
