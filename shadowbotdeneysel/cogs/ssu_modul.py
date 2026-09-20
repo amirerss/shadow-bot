@@ -1,11 +1,12 @@
-﻿import discord
+import discord
 from discord.ext import commands
 from discord import app_commands
 import datetime
 
 YETKILI_ROLLER = [1483443654772396093 , 1494377287666368602 , 1494377031432147055 ]
 DUYURU_KANAL_ID = 1550238173207208027
-SSU_LOG_KANAL_ID = 1550238173207208027  
+SSU_LOG_KANAL_ID = 1550238173207208027
+PING_ROL_ID = 1541911342766882826
 
 class SSUCog(commands.Cog):
     def __init__(self, bot):
@@ -48,8 +49,12 @@ class SSUCog(commands.Cog):
         embed.timestamp = discord.utils.utcnow()
 
         try:
-            etiketler = "@everyone\n@here"
-            gonderilen_mesaj = await kanal.send(content=etiketler, embed=embed)
+            etiketler = f"<@&{PING_ROL_ID}>"
+            gonderilen_mesaj = await kanal.send(
+                content=etiketler,
+                embed=embed,
+                allowed_mentions=discord.AllowedMentions(roles=True)
+            )
             await gonderilen_mesaj.add_reaction("✅")
             await interaction.response.send_message(f"Duyuru başarıyla {kanal.mention} kanalına gönderildi!", ephemeral=True)
 
@@ -87,8 +92,12 @@ class SSUCog(commands.Cog):
         embed.timestamp = discord.utils.utcnow()
 
         try:
-            etiketler = "@everyone\n@here"
-            await kanal.send(content=etiketler, embed=embed)
+            etiketler = f"<@&{PING_ROL_ID}>"
+            await kanal.send(
+                content=etiketler,
+                embed=embed,
+                allowed_mentions=discord.AllowedMentions(roles=True)
+            )
             await interaction.response.send_message(f"Sunucu açılış duyurusu {kanal.mention} kanalına başarıyla gönderildi!", ephemeral=True)
 
             await self.ssu_log(
