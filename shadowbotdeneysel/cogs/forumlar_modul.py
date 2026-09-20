@@ -11,10 +11,10 @@ CARPI_EMOJI = "<:carpi:1548486925881581588>"
 
 # Özel Emojiler (Departman Eşleştirmeleri)
 TIK_EMOJILERI = {
-    "Moderasyon Ekibi": "<✅>",
-    "Gamemaster": "<✅>",
-    "Geliştirici": "<✅>",
-    "Aktör": "<✅>",
+    "Moderasyon Ekibi": "✅",
+    "Gamemaster": "✅",
+    "Geliştirici": "✅",
+    "Aktör": "✅",
     "Etkinlik Sorumlusu": "✅"
 }
 
