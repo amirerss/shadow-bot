@@ -302,6 +302,59 @@ Oyuncularımıza adil, kurallara bağlı ve disiplinli bir yetkili kadro rehberl
             await interaction.followup.send("✅ Kişisel Kadro paneli başarıyla bu kanala kuruldu.", ephemeral=True)
         except Exception as e:
             await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
+    @discord.ui.button(label="Bildirim Rolleri Kur", style=discord.ButtonStyle.secondary, custom_id="kur_bildirim")
+    async def btn_bildirim(self, interaction: discord.Interaction, button: Button):
+        await interaction.response.defer(ephemeral=True)
+        try:
+            from cogs.bildirim_rolleri_modul import save_bildirim_data
+            
+            # Üçlü tırnak kullanarak metindeki satır atlamalarını koruduk
+            metin = """Aşağıdan sunucumuzdaki deneyiminizi özelleştirmek adına, neler için etiket almak istediğinizi seçebilirsiniz. Her rolün detaylı açıklaması ve aşağı bölümden nasıl alınacağı yazmaktadır. 
+
+**@SSU Bildirim:** Sunucumuzda açılan SSU'ların (Server Start Up) ne zaman açılacağı veya açıldığını duyurmak için kullanılır. 
+
+**@Güncelleme Bildirim:** Sunucumuza getirilen güncellemeleri sizlerle paylaşmak için kullanılır.
+
+**@Sneak Peak Bildirim:** Sunucumuzla ilgili **Sneak Peak**'leri, sizlerle paylaşmak için kullanılır.
+
+**@Etkinlik Bildirim:** Sunucumuzdaki etkinlikleri duyurmak için kullanılır.
+
+**@Sosyal Medya Bildirim:** Sunucumuzla bağlantılı sosyal medya paylaşımlarını duyurmak için kullanılır.
+
+**Mesajın altındaki emojilere tıklayarak, rollerinizi alabilirsiniz.**
+
+<:bir:1551003852612829285>  - SSU Bildirim
+<:iki:1551003890944835600>  - Güncelleme Bildirim
+<:uc:1551003931683856454>  - Sneak Peak Bildirim
+<:dort:1551003963157909504>  - Etkinlik Bildirim
+<:bes:1551003990588923974>  - Sosyal Medya Bildirim"""
+
+            embed = discord.Embed(
+                title="Bildirim Rolleri",
+                description=metin,
+                color=0x2b2d31
+            )
+            embed.set_footer(text="Shadow Roleplay • Tepki Rol Sistemi")
+            
+            gonderilen_mesaj = await interaction.channel.send(embed=embed)
+            
+            # Botun mesajın altına sırasıyla atacağı özel tepkiler
+            emojiler = [
+                "<:bir:1551003852612829285>", 
+                "<:iki:1551003890944835600>", 
+                "<:uc:1551003931683856454>", 
+                "<:dort:1551003963157909504>", 
+                "<:bes:1551003990588923974>"
+            ]
+            for emoji in emojiler:
+                await gonderilen_mesaj.add_reaction(emoji)
+                
+            # Sistemi aktifleştirmek için mesaj ve kanal ID'sini veritabanına kaydet
+            save_bildirim_data(interaction.channel.id, gonderilen_mesaj.id)
+            
+            await interaction.followup.send("Bildirim Rolleri paneli bu kanala başarıyla kuruldu.", ephemeral=True)
+        except Exception as e:
+            await interaction.followup.send(f"Hata oluştu: {e}\n*(bildirim_rolleri_modul.py dosyasını kontrol edin)*", ephemeral=True)
 
 
 class KurulumCog(commands.Cog):
