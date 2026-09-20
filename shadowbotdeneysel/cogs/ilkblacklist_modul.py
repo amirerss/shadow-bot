@@ -3,7 +3,7 @@ from discord.ext import commands
 from discord import app_commands
 import os
 
-YETKILI_ROLLER = [1545845833826697296]
+YETKILI_ROLLER = [1483443654772396093 , 1494377287666368602 , 1494377031432147055 ]
 
 BLACKLIST_METNI = """# LİSTE | 1. GRUP
      
