@@ -8,7 +8,7 @@ YETKILI_ROLLER = [1483443654772396093, 1494377287666368602, 1494377031432147055]
 # --- METİNLER ---
 ORTA_METIN = """## Booster (Havalı Kişi) Avantajları;
 
-* Sunucumuza *1 Adet* takviye gönderen kişiler, sunucumuzda özel @Havalı Kişi rolünü kazanır. Bu rol, size #┃destekçi-özel-kanalı'na erişim sağlatacaktır. (Bu kanal, sunucumuza getireceğimiz güncellemeler hakkında sadece **havalı kişilere** özel fotoğraflar veya bilgiler verecektir.)
+* Sunucumuza *1 Adet* takviye gönderen kişiler, sunucumuzda özel <@&1374385057267187896> rolünü kazanır. Bu rol, size <#1527684303058899055>'na erişim sağlatacaktır. (Bu kanal, sunucumuza getireceğimiz güncellemeler hakkında sadece **havalı kişilere** özel fotoğraflar veya bilgiler verecektir.)
 
 * Sunucumuza *2 Adet* takviye gönderen kişilerin isimleri, her güncellemede haritamızda bulunan **Müze** bölümüne eklenecektir.
 
@@ -24,11 +24,11 @@ ORTA_METIN = """## Booster (Havalı Kişi) Avantajları;
 
 ALT_METIN = """## Destekçi (Bağışçı) Avantajları;
 
-* Sunucumuza 100-500 (arası) Robux bağış yapan kişiler, @3. Sınıf Destekçi rolünü kazanır. Bu rol #┃destekçi-özel-kanalı'na erişim sağlatacaktır. (Bu kanal, sunucumuza getireceğimiz güncellemeler hakkında sadece **havalı kişilere** özel fotoğraflar veya bilgiler verecektir.)
+* Sunucumuza 100-500 (arası) Robux bağış yapan kişiler, <@&1527242951334559847> rolünü kazanır. Bu rol <#1527684303058899055>'na erişim sağlatacaktır. (Bu kanal, sunucumuza getireceğimiz güncellemeler hakkında sadece **havalı kişilere** özel fotoğraflar veya bilgiler verecektir.)
 
-* Sunucumuza 500-2000 (arası) Robux bağış yapan kişiler, @2. Sınıf Destekçi rolünü kazanır. Bu rol, isminizi #┃teşekkürler kanalına **kalıcı** olarak ekler. (Önceki avantajlar dahildir.)
+* Sunucumuza 500-2000 (arası) Robux bağış yapan kişiler, <@&1527242948675375197> rolünü kazanır. Bu rol, isminizi #┃teşekkürler kanalına **kalıcı** olarak ekler. (Önceki avantajlar dahildir.)
 
-* Sunucumuza 2000 robux üstü bağış yapan kişiler, @1. Sınıf Destekçi rolünü kazanır. Bu role sahip kişilerin roblox karakterlerinin heykeli, her güncellemede haritamızda bulunan **Müze** bölümüne eklenecektir. (Önceki avantajlar dahildir.)
+* Sunucumuza 2000 robux üstü bağış yapan kişiler, <@&1527242938088685678> rolünü kazanır. Bu role sahip kişilerin roblox karakterlerinin heykeli, her güncellemede haritamızda bulunan **Müze** bölümüne eklenecektir. (Önceki avantajlar dahildir.)
 
 Yapmış olduğumuz bu avantajların hiçbir şekilde **Pay2win** olmasını istemediğimiz için pek fazla avantaj bulunmuyor. Gerçekten sunucumuzu seven ve gelecek zamanlarda yapacağımız şeylere güveniyorsanız bize destek olabilirsiniz.
 
