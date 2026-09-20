@@ -6,7 +6,7 @@ import os
 
 YETKILI_ROLLER = [1483443654772396093, 1494377287666368602, 1494377031432147055]
 
-
+# --- MERKEZİ KURULUM MENÜSÜ ---
 class KurulumMenusu(View):
     def __init__(self, bot):
         super().__init__(timeout=300) 
@@ -39,7 +39,7 @@ class KurulumMenusu(View):
             from cogs.bilgilendirme_modul import BilgilendirmeView
             
             embed = discord.Embed(
-                title="# Bilgilendirme Merkezi",
+                title="Bilgilendirme Merkezi",
                 description=(
                     "Shadow Roleplay; kapsamlı bir RP deneyimi sunan; karakter gelişimi, entrika ve strateji odaklı bir RP sunucusudur. "
                     "Aşağıdaki butonları kullanarak;\n"
@@ -68,7 +68,6 @@ class KurulumMenusu(View):
         await interaction.response.defer(ephemeral=True) 
         try:
             from cogs.forumlar_modul import forum_embedler_olustur, get_forum_data, save_forum_data
-            import os
             
             veri = get_forum_data()
             embedler = forum_embedler_olustur(veri)
@@ -87,6 +86,30 @@ class KurulumMenusu(View):
             await interaction.followup.send("✅ Başvuru formları paneli bu kanala başarıyla kuruldu.", ephemeral=True)
         except Exception as e:
             await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
+
+    @discord.ui.button(label="📞 İletişim Paneli Kur", style=discord.ButtonStyle.secondary, custom_id="kur_iletisim")
+    async def btn_iletisim(self, interaction: discord.Interaction, button: Button):
+        await interaction.response.defer(ephemeral=True)
+        try:
+            from cogs.iletisim_modul import iletisim_embed_olustur, get_iletisim_data, save_iletisim_data
+            
+            veri = get_iletisim_data()
+            embed = iletisim_embed_olustur(veri)
+            
+            dosya_yolu = os.path.join("textures", "iletisim.png")
+            if os.path.exists(dosya_yolu):
+                dosya = discord.File(dosya_yolu, filename="iletisim.png")
+                gonderilen_mesaj = await interaction.channel.send(file=dosya, embed=embed)
+            else:
+                gonderilen_mesaj = await interaction.channel.send(embed=embed)
+            
+            veri["kanal_id"] = interaction.channel.id
+            veri["mesaj_id"] = gonderilen_mesaj.id
+            save_iletisim_data(veri)
+            
+            await interaction.followup.send("✅ İletişim paneli bu kanala başarıyla kuruldu.", ephemeral=True)
+        except Exception as e:
+            await interaction.followup.send(f"❌ Hata oluştu: {e}\n*(İletişim modülündeki kodları kontrol edin)*", ephemeral=True)
 
     @discord.ui.button(label="📜 Kurallar Paneli Kur", style=discord.ButtonStyle.danger, custom_id="kur_kurallar")
     async def btn_kurallar(self, interaction: discord.Interaction, button: Button):
@@ -124,45 +147,58 @@ class KurulumMenusu(View):
         except Exception as e:
             await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
 
-    @discord.ui.button(label="📖 # Rol Terimleri Kur", style=discord.ButtonStyle.secondary, custom_id="kur_rolterimleri")
+    @discord.ui.button(label="📖 Rol Terimleri Kur", style=discord.ButtonStyle.secondary, custom_id="kur_rolterimleri")
     async def btn_rolterimleri(self, interaction: discord.Interaction, button: Button):
         await interaction.response.defer(ephemeral=True)
         try:
-            # Satırın kopyalanırken bozulmaması için güvenli formata çevrildi
-            uyari_metni = (
-                "⚠️   ```Sunucumuza girip rol yapmaya başlamadan önce mutlaka bu kanalı okumanız "
-                "ve kuralları anlamanızı beklemekteyiz. Sunucuya girip rol yapmaya başladığınızda "
-                "bu kuralları bildiğiniz ve okuduğunuz varsayılmaktadır.```   "
-            )
-            
+            uyari_metni = """⚠️   ```Sunucumuza girip rol yapmaya başlamadan önce mutlaka bu kanalı okumanız ve kuralları anlamanızı beklemekteyiz. Sunucuya girip rol yapmaya başladığınızda bu kuralları bildiğiniz ve okuduğunuz varsayılmaktadır.```   """
             docs_link = "https://docs.google.com/document/d/1jyY5_mfLW9jdPucGdslNwLY22TrHsCeGu0qkaG7vavI/edit?tab=t.0"
 
-            terimler = (
-                "**OOC:** Rol dışı. Gerçek hayat konuşmaları ve rolü etkilemeyen şeyler.\n\n"
-                "**IC:** Rol içi. Karakterin yaptığı her şey.\n\n"
-                "**/me:** Karakterinin yaptığı hareketi yazarsın.\n"
-                "**Örnek:** /me kelepçeyi çıkarıp kişiyi kelepçeler.\n\n"
-                "**/do:** Ortamı anlatır veya soru sorar.\n"
-                "**Örnek:** /do Üzerinde ne var?\n\n"
-                "**//:** OOC mesaj atmak için kullanılır.\n\n"
-                "**Fail RP:** Mantıksız ve gerçekçi olmayan rol yapmak.\n\n"
-                "**Metagaming (MG):** Rol dışından öğrendiğin bilgiyi rolde kullanmak.\n\n"
-                "**Powergaming (PG):** Karakterinin yapamayacağı şeyleri yapması.\n\n"
-                "**Combat Log (CL):** Ceza, ölüm veya sorgudan kaçmak için oyundan çıkmak.\n\n"
-                "**Fear RP:** Korkulacak durumda karakterinin korkmasını oynamak.\n\n"
-                "**Pain RP:** Yaralandığında acıyı role yansıtmak.\n\n"
-                "**CK (Character Kill):** Karakterin kalıcı olarak ölmesi.\n\n"
-                "**NLR (New Life Rule):** Öldükten sonra eski hayatını ve yaşananları unutmak.\n\n"
-                "**IC-OOC Mixing:** Gerçek hayat ile rolü birbirine karıştırmak.\n\n"
-                "**RDM (Random Deathmatch):** Sebepsiz yere saldırmak veya öldürmek.\n\n"
-                "**Retarded RP:** Troll, aşırı saçma ve role uymayan davranışlar yapmak.\n\n"
-                "**Refuse RP:** Mantıklı sebep olmadan rolü reddetmek.\n\n"
-                "**Ghost RP:** IC'de gerçekleştirilmemiş bir olaya hayali bir durum veya eylem entegre ederek onu yaşanılmış ve gerçekleşmiş gibi göstermek.\n\n"
-                "**Shoot to Kill:** Rol yapmadan direkt çatışıp öldürmeye çalışmak.\n\n"
-                "**Shoot to Roleplay:** /me ve /do kullanarak yapılan, rol destekli çatışma.\n\n"
-                "**GOOA (Gun Out Of Ass):** Üzerinde olmadığı halde silah çıkarmak veya alınan silahı tekrar kullanmak.\n\n"
-                "**Revenge Kill (RK):** Seni öldüren kişiden yeniden doğduktan sonra intikam almaya çalışmak. NLR ihlalidir."
-            )
+            terimler = """**OOC:** Rol dışı. Gerçek hayat konuşmaları ve rolü etkilemeyen şeyler.
+
+**IC:** Rol içi. Karakterin yaptığı her şey.
+
+**/me:** Karakterinin yaptığı hareketi yazarsın.
+**Örnek:** /me kelepçeyi çıkarıp kişiyi kelepçeler.
+
+**/do:** Ortamı anlatır veya soru sorar.
+**Örnek:** /do Üzerinde ne var?
+
+**//:** OOC mesaj atmak için kullanılır.
+
+**Fail RP:** Mantıksız ve gerçekçi olmayan rol yapmak.
+
+**Metagaming (MG):** Rol dışından öğrendiğin bilgiyi rolde kullanmak.
+
+**Powergaming (PG):** Karakterinin yapamayacağı şeyleri yapması.
+
+**Combat Log (CL):** Ceza, ölüm veya sorgudan kaçmak için oyundan çıkmak.
+
+**Fear RP:** Korkulacak durumda karakterinin korkmasını oynamak.
+
+**Pain RP:** Yaralandığında acıyı role yansıtmak.
+
+**CK (Character Kill):** Karakterin kalıcı olarak ölmesi.
+
+**NLR (New Life Rule):** Öldükten sonra eski hayatını ve yaşananları unutmak.
+
+**IC-OOC Mixing:** Gerçek hayat ile rolü birbirine karıştırmak.
+
+**RDM (Random Deathmatch):** Sebepsiz yere saldırmak veya öldürmek.
+
+**Retarded RP:** Troll, aşırı saçma ve role uymayan davranışlar yapmak.
+
+**Refuse RP:** Mantıklı sebep olmadan rolü reddetmek.
+
+**Ghost RP:** IC'de gerçekleştirilmemiş bir olaya hayali bir durum veya eylem entegre ederek onu yaşanılmış ve gerçekleşmiş gibi göstermek.
+
+**Shoot to Kill:** Rol yapmadan direkt çatışıp öldürmeye çalışmak.
+
+**Shoot to Roleplay:** /me ve /do kullanarak yapılan, rol destekli çatışma.
+
+**GOOA (Gun Out Of Ass):** Üzerinde olmadığı halde silah çıkarmak veya alınan silahı tekrar kullanmak.
+
+**Revenge Kill (RK):** Seni öldüren kişiden yeniden doğduktan sonra intikam almaya çalışmak. NLR ihlalidir."""
 
             embed = discord.Embed(
                 title="📖 Rol Terimleri",
@@ -171,25 +207,18 @@ class KurulumMenusu(View):
             )
             embed.set_footer(text="Shadow Roleplay • Rol Terimleri")
 
-            # Uyarı metni ve detaylı link artık ayrı bir embed box olarak en altta gösteriliyor
             uyari_embed = discord.Embed(
                 description=f"{uyari_metni}\n\n**Detaylı Rol Terim Bilgisi için :** [Tıklayın]({docs_link})",
                 color=0x2b2d31
             )
 
             dosya_yolu = os.path.join("textures", "rolterimleri.png")
-
             if os.path.exists(dosya_yolu):
                 dosya = discord.File(dosya_yolu, filename="rolterimleri.png")
                 embed.set_image(url="attachment://rolterimleri.png")
-                await interaction.channel.send(
-                    embeds=[embed, uyari_embed],
-                    file=dosya
-                )
+                await interaction.channel.send(embeds=[embed, uyari_embed], file=dosya)
             else:
-                await interaction.channel.send(
-                    embeds=[embed, uyari_embed]
-                )
+                await interaction.channel.send(embeds=[embed, uyari_embed])
                 
             await interaction.followup.send("✅ Rol Terimleri paneli bu kanala başarıyla kuruldu.", ephemeral=True)
         except Exception as e:
@@ -199,21 +228,22 @@ class KurulumMenusu(View):
     async def btn_hakkinda(self, interaction: discord.Interaction, button: Button):
         await interaction.response.defer(ephemeral=True)
         try:
-            hakkinda_metni = (
-                "## Vizyonumuz;\n"
-                "Roblox SCP:RP topluluğunda sadece çatışma odaklı olmayan, hikaye anlatımının ve karakter gelişiminin ön planda olduğu kaliteli bir rol ortamı sağlamak.\n\n"
-                "## Misyonumuz;\n"
-                "Oyuncularımıza adil, kurallara bağlı ve disiplinli bir yetkili kadro rehberliğinde sürdürülebilir bir roleplay tecrübesi sunmak. Tesis içerisindeki tüm departmanların gerçekçi bir işleyiş ile aktif çalıştığı, her oyuncunun emeğinin ve rolünün karşılığını aldığı bir düzen oluşturmak.\n\n"
-                "## Farkımız;\n"
-                "* Detaylı lore ve gerçekçilik: Sadece silah çekip ateş etmek veya etrafta aura kasmak değil. Departmanların evrak takibi, soruşturmalar, mahkemelerden protokol yönetimine kadar derinlemesine bir rol imkanı sunuyoruz.\n"
-                "* Yetkili Kadromuz: Yetkili kadromuz ve gamemaster ekibimiz, oyunculara güç gösterisi yapmak için değil, kaliteli rol paslamak ve düzeni sağlamak için görev yaparlar.\n"
-                "* Sürekli Gelişim: Oyuncu topluluğumuzun geri bildirimlerini dikkate alınarak sistemlerimizi ve haritamızı düzenli olarak güncelliyoruz.\n\n"
-                "**Bağlantılarımız:**\n"
-                "* <:Youtube:1546117775003623444> Youtube Hesabımız 👉 [Tıklayın](https://www.youtube.com/@ScpShadowRoleplay)\n"
-                "* <:instagram:1546117822164238458> İnstagram Hesabımız 👉 [Tıklayın](https://www.instagram.com/scpshadowroleplay)\n"
-                "* <:tiktok:1546117879894773842> Tiktok Hesabımız 👉 [Tıklayın](https://www.tiktok.com/@scpshadowroleplay)\n"
-                "* <:Roblox:1546118729560100864> Roblox Grubumuz 👉 [Tıklayın](https://www.roblox.com/tr/communities/35886894/Scp-Shadow-Roleplay#!/about)"
-            )
+            hakkinda_metni = """## Vizyonumuz;
+Roblox SCP:RP topluluğunda sadece çatışma odaklı olmayan, hikaye anlatımının ve karakter gelişiminin ön planda olduğu kaliteli bir rol ortamı sağlamak.
+
+## Misyonumuz;
+Oyuncularımıza adil, kurallara bağlı ve disiplinli bir yetkili kadro rehberliğinde sürdürülebilir bir roleplay tecrübesi sunmak. Tesis içerisindeki tüm departmanların gerçekçi bir işleyiş ile aktif çalıştığı, her oyuncunun emeğinin ve rolünün karşılığını aldığı bir düzen oluşturmak.
+
+## Farkımız;
+* Detaylı lore ve gerçekçilik: Sadece silah çekip ateş etmek veya etrafta aura kasmak değil. Departmanların evrak takibi, soruşturmalar, mahkemelerden protokol yönetimine kadar derinlemesine bir rol imkanı sunuyoruz.
+* Yetkili Kadromuz: Yetkili kadromuz ve gamemaster ekibimiz, oyunculara güç gösterisi yapmak için değil, kaliteli rol paslamak ve düzeni sağlamak için görev yaparlar.
+* Sürekli Gelişim: Oyuncu topluluğumuzun geri bildirimlerini dikkate alınarak sistemlerimizi ve haritamızı düzenli olarak güncelliyoruz.
+
+**Bağlantılarımız:**
+* <:Youtube:1546117775003623444> Youtube Hesabımız 👉 [Tıklayın](https://www.youtube.com/@ScpShadowRoleplay)
+* <:instagram:1546117822164238458> İnstagram Hesabımız 👉 [Tıklayın](https://www.instagram.com/scpshadowroleplay)
+* <:tiktok:1546117879894773842> Tiktok Hesabımız 👉 [Tıklayın](https://www.tiktok.com/@scpshadowroleplay)
+* <:Roblox:1546118729560100864> Roblox Grubumuz 👉 [Tıklayın](https://www.roblox.com/tr/communities/35886894/Scp-Shadow-Roleplay#!/about)"""
 
             embed = discord.Embed(
                 description=hakkinda_metni,
@@ -232,65 +262,44 @@ class KurulumMenusu(View):
         except Exception as e:
             await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
 
-    @discord.ui.button(label="📞 İletişim Paneli Kur", style=discord.ButtonStyle.secondary, custom_id="kur_iletisim")
-    async def btn_iletisim(self, interaction: discord.Interaction, button: Button):
+    # --- KİŞİSEL KADRO (YETKİLİ + GELİŞTİRİCİ) KURULUM BUTONU ---
+    @discord.ui.button(label="👔 Kişisel Kadro Kur", style=discord.ButtonStyle.success, custom_id="kur_kisisel")
+    async def btn_kisisel(self, interaction: discord.Interaction, button: Button):
         await interaction.response.defer(ephemeral=True)
         try:
-            from cogs.iletisim_modul import get_iletisim_data, save_iletisim_data, iletisim_embed_olustur
-
-            veri = get_iletisim_data()
-            embed = iletisim_embed_olustur(veri)
-
-            dosya_yolu = os.path.join("textures", "ulasim.png")
+            # Diğer dosyalardaki verileri çekmek için importlar
+            from cogs.yetkili_ekip_modul import get_yetkili_data, yetkili_embed_olustur, save_yetkili_data
+            from cogs.gelistirici_ekip_modul import get_gelistirici_data, gelistirici_embed_olustur, save_gelistirici_data
+            
+            yetkili_veri = get_yetkili_data()
+            gelistirici_veri = get_gelistirici_data()
+            
+            # Üst üste duracak iki tablomuz
+            yetkili_embed = yetkili_embed_olustur(yetkili_veri)
+            yetkili_embed.description = ""  # Senin talebin üzerine açıklamayı sildik
+            
+            gelistirici_embed = gelistirici_embed_olustur(gelistirici_veri)
+            gelistirici_embed.description = "" # Açıklama metnini sildik
+            
+            # En tepeye görseli ekliyoruz
+            dosya_yolu = os.path.join("textures", "kisisel.png")
             if os.path.exists(dosya_yolu):
-                dosya = discord.File(dosya_yolu, filename="ulasim.png")
-                gonderilen_mesaj = await interaction.channel.send(file=dosya, embed=embed)
+                dosya = discord.File(dosya_yolu, filename="kisisel.png")
+                yetkili_embed.set_image(url="attachment://kisisel.png")
+                gonderilen_mesaj = await interaction.channel.send(file=dosya, embeds=[yetkili_embed, gelistirici_embed])
             else:
-                gonderilen_mesaj = await interaction.channel.send(embed=embed)
-
-            veri["kanal_id"] = interaction.channel.id
-            veri["mesaj_id"] = gonderilen_mesaj.id
-            save_iletisim_data(veri)
-
-            await interaction.followup.send("✅ İletişim paneli bu kanala başarıyla kuruldu.", ephemeral=True)
-        except Exception as e:
-            await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
-
-    @discord.ui.button(label="💻 Geliştirici Ekip Paneli Kur", style=discord.ButtonStyle.secondary, custom_id="kur_gelistirici")
-    async def btn_gelistirici(self, interaction: discord.Interaction, button: Button):
-        await interaction.response.defer(ephemeral=True)
-        try:
-            from cogs.gelistirici_ekip_modul import get_gelistirici_data, save_gelistirici_data, gelistirici_embed_olustur
-
-            veri = get_gelistirici_data()
-            embed = gelistirici_embed_olustur(veri)
-
-            gonderilen_mesaj = await interaction.channel.send(embed=embed)
-
-            veri["kanal_id"] = interaction.channel.id
-            veri["mesaj_id"] = gonderilen_mesaj.id
-            save_gelistirici_data(veri)
-
-            await interaction.followup.send("✅ Geliştirici ekip paneli bu kanala başarıyla kuruldu.", ephemeral=True)
-        except Exception as e:
-            await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
-
-    @discord.ui.button(label="🛡️ Yetkili Ekip Paneli Kur", style=discord.ButtonStyle.secondary, custom_id="kur_yetkili")
-    async def btn_yetkili(self, interaction: discord.Interaction, button: Button):
-        await interaction.response.defer(ephemeral=True)
-        try:
-            from cogs.yetkili_ekip_modul import get_yetkili_data, save_yetkili_data, yetkili_embed_olustur
-
-            veri = get_yetkili_data()
-            embed = yetkili_embed_olustur(veri)
-
-            gonderilen_mesaj = await interaction.channel.send(embed=embed)
-
-            veri["kanal_id"] = interaction.channel.id
-            veri["mesaj_id"] = gonderilen_mesaj.id
-            save_yetkili_data(veri)
-
-            await interaction.followup.send("✅ Yetkili ekip paneli bu kanala başarıyla kuruldu.", ephemeral=True)
+                gonderilen_mesaj = await interaction.channel.send(embeds=[yetkili_embed, gelistirici_embed])
+            
+            # Sistemlerin güncellenebilmesi için kanal ve mesaj ID'lerini kendi JSON'larına kaydediyoruz
+            yetkili_veri["kanal_id"] = interaction.channel.id
+            yetkili_veri["mesaj_id"] = gonderilen_mesaj.id
+            save_yetkili_data(yetkili_veri)
+            
+            gelistirici_veri["kanal_id"] = interaction.channel.id
+            gelistirici_veri["mesaj_id"] = gonderilen_mesaj.id
+            save_gelistirici_data(gelistirici_veri)
+            
+            await interaction.followup.send("✅ Kişisel Kadro paneli başarıyla bu kanala kuruldu.", ephemeral=True)
         except Exception as e:
             await interaction.followup.send(f"❌ Hata oluştu: {e}", ephemeral=True)
 
