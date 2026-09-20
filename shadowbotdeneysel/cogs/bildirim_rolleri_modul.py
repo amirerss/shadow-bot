@@ -8,11 +8,11 @@ DATA_FILE = "bildirim_rolleri.json"
 # Emoji ID -> Verilecek Rol ID Eşleştirmesi 
 # (Sıfırları silip kendi Bildirim Rollerinin ID'lerini yapıştırmalısın)
 REACTION_ROLES = {
-    1551003852612829285: 111111111111111111, # SSU Bildirim Rolü ID
-    1551003890944835600: 222222222222222222, # Güncelleme Bildirim Rolü ID
-    1551003931683856454: 333333333333333333, # Sneak Peak Bildirim Rolü ID
-    1551003963157909504: 444444444444444444, # Etkinlik Bildirim Rolü ID
-    1551003990588923974: 555555555555555555  # Sosyal Medya Bildirim Rolü ID
+    1551003852612829285: 1541911342766882826, # SSU Bildirim Rolü ID
+    1551003890944835600: 1541911308721455126, # Güncelleme Bildirim Rolü ID
+    1551003931683856454: 1541912703923257434, # Sneak Peak Bildirim Rolü ID
+    1551003963157909504: 1541911137464098868, # Etkinlik Bildirim Rolü ID
+    1551003990588923974: 1541911152253075456  # Sosyal Medya Bildirim Rolü ID
 }
 
 def get_bildirim_data():
