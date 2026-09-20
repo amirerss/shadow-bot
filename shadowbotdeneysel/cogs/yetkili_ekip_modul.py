@@ -1,4 +1,4 @@
-﻿import discord
+import discord
 from discord.ext import commands
 from discord import app_commands
 import json
@@ -50,10 +50,10 @@ def save_yetkili_data(veri):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(veri, f, indent=4, ensure_ascii=False)
 
-def yetkili_embed_olustur(veri):
+def yetkili_embed_olustur(veri, aciklama_goster=True):
     embed = discord.Embed(
         title="Yetkili Ekip Kadrosu",
-        description="Güncel yetkili kadrosu ve hiyerarşik sıralaması aşağıda belirtilmiştir.\n\n",
+        description="Güncel yetkili kadrosu ve hiyerarşik sıralaması aşağıda belirtilmiştir.\n\n" if aciklama_goster else "",
         color=0x2b2d31
     )
 
