@@ -274,12 +274,9 @@ Oyuncularımıza adil, kurallara bağlı ve disiplinli bir yetkili kadro rehberl
             yetkili_veri = get_yetkili_data()
             gelistirici_veri = get_gelistirici_data()
             
-            # Üst üste duracak iki tablomuz
-            yetkili_embed = yetkili_embed_olustur(yetkili_veri)
-            yetkili_embed.description = ""  # Senin talebin üzerine açıklamayı sildik
-            
-            gelistirici_embed = gelistirici_embed_olustur(gelistirici_veri)
-            gelistirici_embed.description = "" # Açıklama metnini sildik
+            # Üst üste duracak iki tablomuz (giriş cümlesi gizli, sadece kadro listesi)
+            yetkili_embed = yetkili_embed_olustur(yetkili_veri, aciklama_goster=False)
+            gelistirici_embed = gelistirici_embed_olustur(gelistirici_veri, aciklama_goster=False)
             
             # En tepeye görseli ekliyoruz
             dosya_yolu = os.path.join("textures", "kisisel.png")
